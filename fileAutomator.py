@@ -24,7 +24,7 @@ image_extensions = [".jpg", ".jpeg", ".jpe", ".jif", ".jfif", ".jfi", ".png", ".
 video_extensions = [".webm", ".mpg", ".mp2", ".mpeg", ".mpe", ".mpv", ".ogg",
                     ".mp4", ".mp4v", ".m4v", ".avi", ".wmv", ".mov", ".qt", ".flv", ".swf", ".avchd"]
 # ? supported Audio types
-audio_extensions = [".m4a", ".flac", "mp3", ".wav", ".wma", ".aac"]
+audio_extensions = [".m4a", ".flac", ".mp3", ".wav", ".wma", ".aac"]
 # ? supported Document types
 document_extensions = [".doc", ".docx", ".odt",
                        ".pdf", ".xls", ".xlsx", ".ppt", ".pptx"]
@@ -54,6 +54,8 @@ class MoverHandler(FileSystemEventHandler):
     # ? THIS FUNCTION WILL RUN WHENEVER THERE IS A CHANGE IN "source_dir"
     # ? .upper is for not missing out on files with uppercase extensions
     def on_modified(self, event):
+        # Sleep two minutes to give the browser time to finish downloading (prevents duplicate files)
+        sleep(120)  # This should be enough time for most use cases but could be adjusted for larger files
         with scandir(source_dir) as entries:
             for entry in entries:
                 name = entry.name
